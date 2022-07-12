@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Login</title>
-    <script src="~/js/login.js"></script>
+    @* <script src="~/js/login.js"></script> *@
     <link rel="stylesheet" href="~/css/login.css" />
 </head>
 
@@ -38,13 +38,21 @@
                 <label>Passwords don`t match</label><br />
             </div>
             <label asp-for="RegisterPasswordConfirm"></label><br />
-            <input id="RegisterPasswordConfirm" onkeyup="verify()" asp-for="RegisterPasswordConfirm" />
+            <input id="confirmPass" asp-for="RegisterPasswordConfirm" />
             <span asp-validation-for="RegisterPasswordConfirm"></span>
         </div>
         <div>
             <input type="submit" value="Регистрация" />
         </div>
     </form>
+    <script>
+        var passconf = document.getElementById("confirmPass");
+        console.log("1");
+        passconf.onfocus = function () {
+            document.getElementById("match").style.display = "block";
+        };
+        console.log("2");
+    </script>
 </body>
 
 </html>
