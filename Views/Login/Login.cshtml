@@ -1,0 +1,50 @@
+﻿@model Time_Tracker.ViewModels.LoginRegisterViewModel
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <script src="~/js/login.js"></script>
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<body>
+    <form method="post" asp-controller="Login" asp-action="Register">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="RegisterEmail"></label><br />
+            <input asp-for="RegisterEmail" />
+            <span asp-validation-for="RegisterEmail"></span>
+        </div>
+        <div>
+            <label asp-for="RegisterCompany"></label><br />
+            <input asp-for="RegisterCompany" />
+            <span asp-validation-for="RegisterCompany"></span>
+        </div>
+        <div>
+            <label asp-for="RegisterPost"></label><br />
+            <input asp-for="RegisterPost" />
+            <span asp-validation-for="RegisterPost"></span>
+        </div>
+        <div>
+            <label asp-for="RegisterPassword"></label><br />
+            <input id="RegisterPassword" asp-for="RegisterPassword" />
+            <span asp-validation-for="RegisterPassword"></span>
+        </div>
+        <div>
+            <div id="match">
+                <label>Passwords don`t match</label><br />
+            </div>
+            <label asp-for="RegisterPasswordConfirm"></label><br />
+            <input id="RegisterPasswordConfirm" onkeyup="verify()" asp-for="RegisterPasswordConfirm" />
+            <span asp-validation-for="RegisterPasswordConfirm"></span>
+        </div>
+        <div>
+            <input type="submit" value="Регистрация" />
+        </div>
+    </form>
+</body>
+
+</html>
