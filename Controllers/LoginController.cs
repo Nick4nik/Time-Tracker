@@ -20,7 +20,9 @@ namespace Time_Tracker.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            LoginRegisterViewModel model = new LoginRegisterViewModel();
+            model.Message = false;
+            return View(model);
         }
 
         [HttpPost]

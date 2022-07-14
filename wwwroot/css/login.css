@@ -1,20 +1,26 @@
-﻿body {
-	display: flex;
-}
-
-#match {
+﻿#match {
 	display: none;
-	position: relative;
+	position: absolute;
 }
 
 #login {
-	float: left;
-	width: 200px;
+	display: block;
+	border: solid;
 }
 
 #register {
 	display: block;
 	border: solid;
-	float: right;
-	width: 200px;
+}
+
+input:invalid {
+	border: 1px dashed red;
+}
+
+input:invalid:required {
+	background-image: wheat;
+}
+
+input:valid {
+	border: 1px solid black;
 }

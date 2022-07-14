@@ -22,7 +22,7 @@ namespace Time_Tracker.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return View("Views/Login/Login.cshtml");
+                return RedirectToAction("Login", "Login");
             }
             return View();
         }

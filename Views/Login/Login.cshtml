@@ -6,62 +6,83 @@
 <head>
     <meta charset="utf-8" />
     <title>Login</title>
-    <link rel="stylesheet" href="login.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
 </head>
 
 <body>
-    <div id="message" class="container">
-        <label>Something went wrong. Please retype</label>
-    </div>
-    <div id="login" class="container">
-        <form method="post" asp-controller="Login" asp-action="Login">
-            <div>
-                <label for="logEmail">Email</label><br />
-                <input id="logEmail" name="LoginEmail" type="text" required />
-            </div>
-            <div>
-                <label for="logPass">Password</label><br />
-                <input id="logPass" name="LoginPassword" type="text" required />
-            </div>
-            <div>
-                <input type="checkbox" id="logRemember" name="LoginRememberMe" title="Remeber me" required />
-            </div>
-            <div>
-                <input type="submit" value="Sign in" />
-            </div>
-        </form>
-    </div>
-    <div name="register" class="container">
-        <form method="post" asp-controller="Login" asp-action="Register">
-            <div>
-                <label for="regEmail">Email</label><br />
-                <input id="regEmail" name="RegisterEmail" type="text" required />
-            </div>
-            <div>
-                <label for="regComp">Company</label><br />
-                <input id="regComp" name="RegisterCompany" type="text" required />
-            </div>
-            <div>
-                <label for="regPost">Post</label><br />
-                <input id="regPost" name="RegisterPost" type="text" required />
-            </div>
-            <div>
-                <label for="regPass">Password</label><br />
-                <input id="regPass" name="RegisterPassword" type="password" required />
-            </div>
-            <div>
-                <div id="match">
-                    <label>Passwords don`t match or incorrect</label><br />
+    <table>
+        <tr>
+            <td colspan="2">
+                <div id="message" class="container">
+                    @if (Model.Message)
+                    {
+                        <label>Ooops... Something went wrong. Please retype.</label>
+                    }
                 </div>
-                <label for="regPassConf">Password confirm</label><br />
-                <input id="regPassConf" name="RegisterPasswordConfirm" type="password" pattern="[A-Za-z0-9]{6}"
-                    title="A lowercase, uppercase letter, number - total 6 characters" required />
-            </div>
-            <div>
-                <input type="submit" value="Sign up" />
-            </div>
-        </form>
-    </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <div id="login" class="container">
+                    <form method="post" asp-controller="Login" asp-action="Login">
+                        <div>
+                            <label for="logEmail">Email</label><br />
+                            <input id="logEmail" name="LoginEmail" type="text" required minlength="5" />
+                        </div>
+                        <div>
+                            <label for="logPass">Password</label><br />
+                            <input id="logPass" name="LoginPassword" type="text" required minlength="6" maxlength="6" />
+                        </div>
+                        <div>
+                            <input type="checkbox" id="logRemember" name="LoginRememberMe" title="Remeber me" />
+                        </div>
+                        <div>
+                            <button type="submit">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+            </td>
+            <td>
+                <div id="register" class="container">
+                    <form method="post" asp-controller="Login" asp-action="Register">
+                        <div>
+                            <label for="regEmail">Email</label><br />
+                            <input id="regEmail" name="RegisterEmail" type="text" required minlength="5" />
+                        </div>
+                        <div>
+                            <label for="regComp">Company</label><br />
+                            <input id="regComp" name="RegisterCompany" type="text" required />
+                        </div>
+                        <div>
+                            <label for="regPost">Post</label><br />
+                            <input id="regPost" name="RegisterPost" type="text" required />
+                        </div>
+                        <div>
+                            <label for="regPass">Password</label><br />
+                            <input id="regPass" name="RegisterPassword" type="password" required minlength="6"
+                                maxlength="6" />
+                        </div>
+                        <div>
+                            <div id="match">
+                                <label>Passwords don`t match or incorrect</label><br />
+                            </div>
+                            <label for="regPassConf">Password confirm</label><br />
+                            <input id="regPassConf" name="RegisterPasswordConfirm" type="password"
+                                pattern="[A-Za-z0-9]{6}"
+                                title="A lowercase, uppercase letter, number - total 6 characters" required
+                                minlength="6" maxlength="6" />
+                        </div>
+                        <div>
+                            <button type="submit">Sign up</button>
+                        </div>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+
     <script>
         var pass = document.getElementById("regPass");
         var passConf = document.getElementById("regPassConf");
@@ -85,6 +106,8 @@
             check();
         }
         window.onload = hide();
+
+
     </script>
 </body>
 
