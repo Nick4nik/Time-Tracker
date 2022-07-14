@@ -31,7 +31,7 @@ namespace Time_Tracker.Controllers
                 model.LoginEmail, model.LoginPassword, model.LoginRememberMe, false);
             if (!result.Succeeded)
             {
-                model.Message = false;
+                model.Message = true;
                 return View(model);
             }
 
@@ -60,8 +60,8 @@ namespace Time_Tracker.Controllers
 
             if (!result.Succeeded)
             {
-                model.Message = false;
-                return View(model);
+                model.Message = true;
+                return View("Login");
             }
 
             await signInManager.SignInAsync(user, false);

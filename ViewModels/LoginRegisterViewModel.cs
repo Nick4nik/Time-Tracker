@@ -14,6 +14,6 @@ namespace Time_Tracker.ViewModels
         public List<Post> RegisterPost { get; set; }
         public string RegisterPassword { get; set; }
         public string RegisterPasswordConfirm { get; set; }
-        public bool? Message { get; set; }
+        public bool Message { get; set; }
     }
 }

@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Initialize;
 using Time_Tracker.Models;
@@ -25,10 +22,10 @@ namespace Time_Tracker
                 var services = scope.ServiceProvider;
                 try
                 {
-                    UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
-                    var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    var db = new ApplicationContext();
-                    await Initializer.Initialize(userManager, rolesManager, db);
+                    //UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
+                    //var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    //var db = new ApplicationContext();
+                    //await Initializer.Initialize(userManager, rolesManager, db);
                 }
                 catch (Exception ex)
                 {

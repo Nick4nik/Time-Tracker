@@ -6,52 +6,85 @@
 <head>
     <meta charset="utf-8" />
     <title>Login</title>
-    @* <script src="~/js/login.js"></script> *@
-    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="login.css" />
 </head>
 
 <body>
-    <form method="post" asp-controller="Login" asp-action="Register">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="RegisterEmail"></label><br />
-            <input asp-for="RegisterEmail" />
-            <span asp-validation-for="RegisterEmail"></span>
-        </div>
-        <div>
-            <label asp-for="RegisterCompany"></label><br />
-            <input asp-for="RegisterCompany" />
-            <span asp-validation-for="RegisterCompany"></span>
-        </div>
-        <div>
-            <label asp-for="RegisterPost"></label><br />
-            <input asp-for="RegisterPost" />
-            <span asp-validation-for="RegisterPost"></span>
-        </div>
-        <div>
-            <label asp-for="RegisterPassword"></label><br />
-            <input id="RegisterPassword" asp-for="RegisterPassword" />
-            <span asp-validation-for="RegisterPassword"></span>
-        </div>
-        <div>
-            <div id="match">
-                <label>Passwords don`t match</label><br />
+    <div id="message" class="container">
+        <label>Something went wrong. Please retype</label>
+    </div>
+    <div id="login" class="container">
+        <form method="post" asp-controller="Login" asp-action="Login">
+            <div>
+                <label for="logEmail">Email</label><br />
+                <input id="logEmail" name="LoginEmail" type="text" required />
             </div>
-            <label asp-for="RegisterPasswordConfirm"></label><br />
-            <input id="confirmPass" asp-for="RegisterPasswordConfirm" />
-            <span asp-validation-for="RegisterPasswordConfirm"></span>
-        </div>
-        <div>
-            <input type="submit" value="Регистрация" />
-        </div>
-    </form>
+            <div>
+                <label for="logPass">Password</label><br />
+                <input id="logPass" name="LoginPassword" type="text" required />
+            </div>
+            <div>
+                <input type="checkbox" id="logRemember" name="LoginRememberMe" title="Remeber me" required />
+            </div>
+            <div>
+                <input type="submit" value="Sign in" />
+            </div>
+        </form>
+    </div>
+    <div name="register" class="container">
+        <form method="post" asp-controller="Login" asp-action="Register">
+            <div>
+                <label for="regEmail">Email</label><br />
+                <input id="regEmail" name="RegisterEmail" type="text" required />
+            </div>
+            <div>
+                <label for="regComp">Company</label><br />
+                <input id="regComp" name="RegisterCompany" type="text" required />
+            </div>
+            <div>
+                <label for="regPost">Post</label><br />
+                <input id="regPost" name="RegisterPost" type="text" required />
+            </div>
+            <div>
+                <label for="regPass">Password</label><br />
+                <input id="regPass" name="RegisterPassword" type="password" required />
+            </div>
+            <div>
+                <div id="match">
+                    <label>Passwords don`t match or incorrect</label><br />
+                </div>
+                <label for="regPassConf">Password confirm</label><br />
+                <input id="regPassConf" name="RegisterPasswordConfirm" type="password" pattern="[A-Za-z0-9]{6}"
+                    title="A lowercase, uppercase letter, number - total 6 characters" required />
+            </div>
+            <div>
+                <input type="submit" value="Sign up" />
+            </div>
+        </form>
+    </div>
     <script>
-        var passconf = document.getElementById("confirmPass");
-        console.log("1");
-        passconf.onfocus = function () {
+        var pass = document.getElementById("regPass");
+        var passConf = document.getElementById("regPassConf");
+        function show() {
             document.getElementById("match").style.display = "block";
-        };
-        console.log("2");
+        }
+        function hide() {
+            document.getElementById("match").style.display = "none";
+        }
+        function check() {
+            if (pass.value === passConf.value && pass.value !== "") {
+                hide();
+                return;
+            }
+            show();
+        }
+        pass.onkeyup = function () {
+            check();
+        }
+        passConf.onkeyup = function () {
+            check();
+        }
+        window.onload = hide();
     </script>
 </body>
 

@@ -1,3 +1,20 @@
-﻿#match {
+﻿body {
+	display: flex;
+}
+
+#match {
 	display: none;
+	position: relative;
+}
+
+#login {
+	float: left;
+	width: 200px;
+}
+
+#register {
+	display: block;
+	border: solid;
+	float: right;
+	width: 200px;
 }
