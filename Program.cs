@@ -22,10 +22,10 @@ namespace Time_Tracker
                 var services = scope.ServiceProvider;
                 try
                 {
-                    //UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
-                    //var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    //var db = new ApplicationContext();
-                    //await Initializer.Initialize(userManager, rolesManager, db);
+                    UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
+                    var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var db = new ApplicationContext();
+                    await Initializer.Initialize(userManager, rolesManager, db);
                 }
                 catch (Exception ex)
                 {

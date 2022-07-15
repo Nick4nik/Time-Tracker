@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
 using Time_Tracker.ViewModels;
@@ -10,18 +11,22 @@ namespace Time_Tracker.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly ApplicationContext db;
 
-        public LoginController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public LoginController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext db)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.db = db;
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             LoginRegisterViewModel model = new LoginRegisterViewModel();
             model.Message = false;
+            model.RegisterCompany = await db.Companies.ToListAsync();
+            model.RegisterPost = await db.Posts.ToListAsync();
             return View(model);
         }
 
@@ -55,9 +60,10 @@ namespace Time_Tracker.Controllers
             {
                 Email = model.RegisterEmail,
                 UserName = model.RegisterEmail,
-                Company = model.RegisterCompany,
-                Post = model.RegisterPost
+                
             };
+            var company = await db.Companies.FindAsync(model.CompanyId);
+            var post = await db.Posts.FindAsync(model.PostId);
             var result = await userManager.CreateAsync(user, model.RegisterPassword);
 
             if (!result.Succeeded)
@@ -66,6 +72,10 @@ namespace Time_Tracker.Controllers
                 return View("Login");
             }
 
+            user.Company.Add(company);
+            user.Post.Add(post);
+
+            await db.SaveChangesAsync();
             await signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Home");
         }

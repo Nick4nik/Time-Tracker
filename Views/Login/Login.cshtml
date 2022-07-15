@@ -51,11 +51,27 @@
                         </div>
                         <div>
                             <label for="regComp">Company</label><br />
-                            <input id="regComp" name="RegisterCompany" type="text" required />
+                            <select name="CompanyId" id="slQuiz">
+                            <option selected="selected">Please select</option>  
+                            @{
+                                foreach (var i in @Model.RegisterCompany)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+                        </select>
                         </div>
                         <div>
                             <label for="regPost">Post</label><br />
-                            <input id="regPost" name="RegisterPost" type="text" required />
+                            <select name="PostId" id="slQuiz">
+                            <option selected="selected">Please select</option>  
+                            @{
+                                foreach (var i in @Model.RegisterPost)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+                        </select>
                         </div>
                         <div>
                             <label for="regPass">Password</label><br />
