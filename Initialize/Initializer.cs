@@ -13,7 +13,7 @@ namespace Time_Tracker.Initialize
             #region Initialize list
             string adminRole = "admin";
             string adminEmail = "admin@gmail.com";
-            string adminPassword = "Q1w2e3r4";
+            string adminPassword = "Q1w2e3";
             string userRole = "employee";
             string userEmail = "user@gmail.com";
             string userPassword = "Q1w2e3";

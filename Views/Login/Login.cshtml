@@ -6,6 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Login</title>
+    <script src="~/js/login.js" async></script>
     <link rel="stylesheet" href="~/css/login.css" />
 </head>
 
@@ -16,7 +17,7 @@
                 <div id="message" class="container">
                     @if (Model.Message)
                     {
-                        <label>Ooops... Something went wrong. Please retype.</label>
+                        <label>Ooops... Something went wrong.Please retype.</label>
                     }
                 </div>
             </td>
@@ -31,13 +32,14 @@
                         </div>
                         <div>
                             <label for="logPass">Password</label><br />
-                            <input id="logPass" name="LoginPassword" type="text" required minlength="6" maxlength="6" />
+                            <input id="logPass" name="LoginPassword" type="password" required minlength="6" maxlength="6" />
                         </div>
                         <div>
                             <input type="checkbox" id="logRemember" name="LoginRememberMe" title="Remeber me" />
+                            <label for="logRemember">Remember me</label>
                         </div>
                         <div>
-                            <button type="submit">Sign in</button>
+                            <button id="submitLog">Sign in</button>
                         </div>
                     </form>
                 </div>
@@ -45,43 +47,49 @@
             <td>
                 <div id="register" class="container">
                     <form method="post" asp-controller="Login" asp-action="Register">
+                        <div id="emailCheck">
+                            <label>Email is incorrect</label>
+                        </div>
                         <div>
                             <label for="regEmail">Email</label><br />
                             <input id="regEmail" name="RegisterEmail" type="text" required minlength="5" />
                         </div>
-                        <div>
-                            <label for="regComp">Company</label><br />
-                            <select name="CompanyId" id="slQuiz">
-                            <option selected="selected">Please select</option>  
-                            @{
-                                foreach (var i in @Model.RegisterCompany)
-                                {
-                                    <option value="@i.Id">@i.Name</option>
-                                }
-                            }
-                        </select>
+                        <div id="select">
+                            <label>Please select company and position</label>
                         </div>
                         <div>
-                            <label for="regPost">Post</label><br />
-                            <select name="PostId" id="slQuiz">
-                            <option selected="selected">Please select</option>  
-                            @{
-                                foreach (var i in @Model.RegisterPost)
+                            <label for="Company">Company</label><br />
+                            <select name="CompanyId" id="Company" required>
+                                <option selected="selected" disabled value=""></option>
+                                @foreach (var i in @Model.RegisterCompany)
                                 {
                                     <option value="@i.Id">@i.Name</option>
                                 }
-                            }
-                        </select>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="Post">Position</label><br />
+                            <select name="PostId" id="Post" required>
+                                <option selected="selected" disabled value=""></option>
+                                @foreach (var i in @Model.RegisterPost)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div id="passMatch">
+                            <label>Passwords don`t match</label><br />
+                        </div>
+                        <div id="passEmpty">
+                            <label>Please, enter data in the another field</label>
                         </div>
                         <div>
                             <label for="regPass">Password</label><br />
-                            <input id="regPass" name="RegisterPassword" type="password" required minlength="6"
-                                maxlength="6" />
+                            <input id="regPass" name="RegisterPassword" type="password" pattern="[A-Za-z0-9]{6}"
+                                title="A lowercase, uppercase letter, number - total 6 characters" required
+                                minlength="6" maxlength="6" />
                         </div>
                         <div>
-                            <div id="match">
-                                <label>Passwords don`t match or incorrect</label><br />
-                            </div>
                             <label for="regPassConf">Password confirm</label><br />
                             <input id="regPassConf" name="RegisterPasswordConfirm" type="password"
                                 pattern="[A-Za-z0-9]{6}"
@@ -89,42 +97,13 @@
                                 minlength="6" maxlength="6" />
                         </div>
                         <div>
-                            <button type="submit">Sign up</button>
+                            <button id="submitReg">Sign up</button>
                         </div>
                     </form>
                 </div>
             </td>
         </tr>
     </table>
-
-
-
-    <script>
-        var pass = document.getElementById("regPass");
-        var passConf = document.getElementById("regPassConf");
-        function show() {
-            document.getElementById("match").style.display = "block";
-        }
-        function hide() {
-            document.getElementById("match").style.display = "none";
-        }
-        function check() {
-            if (pass.value === passConf.value && pass.value !== "") {
-                hide();
-                return;
-            }
-            show();
-        }
-        pass.onkeyup = function () {
-            check();
-        }
-        passConf.onkeyup = function () {
-            check();
-        }
-        window.onload = hide();
-
-
-    </script>
 </body>
 
 </html>

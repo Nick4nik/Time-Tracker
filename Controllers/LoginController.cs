@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
 using Time_Tracker.ViewModels;
@@ -25,8 +26,7 @@ namespace Time_Tracker.Controllers
         {
             LoginRegisterViewModel model = new LoginRegisterViewModel();
             model.Message = false;
-            model.RegisterCompany = await db.Companies.ToListAsync();
-            model.RegisterPost = await db.Posts.ToListAsync();
+            await Lists(model);
             return View(model);
         }
 
@@ -39,6 +39,7 @@ namespace Time_Tracker.Controllers
             if (!result.Succeeded)
             {
                 model.Message = true;
+                Lists(model);
                 return View(model);
             }
 
@@ -69,7 +70,9 @@ namespace Time_Tracker.Controllers
             if (!result.Succeeded)
             {
                 model.Message = true;
-                return View("Login");
+                model.RegisterCompany = await db.Companies.ToListAsync();
+                model.RegisterPost = await db.Posts.ToListAsync();
+                return View("Login", model);
             }
 
             user.Company.Add(company);
@@ -78,6 +81,13 @@ namespace Time_Tracker.Controllers
             await db.SaveChangesAsync();
             await signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<LoginRegisterViewModel> Lists(LoginRegisterViewModel model)
+        {
+            model.RegisterCompany = await db.Companies.ToListAsync();
+            model.RegisterPost = await db.Posts.ToListAsync();
+            return model;
         }
     }
 }
