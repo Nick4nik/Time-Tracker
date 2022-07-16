@@ -71,3 +71,15 @@ C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\refint\Time Tracker.dl
 C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Time Tracker.pdb
 C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Time Tracker.genruntimeconfig.cache
 C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\ref\Time Tracker.dll
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Task\Create.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Task\Edit.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Task\History.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Task\Index.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Time\History.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Time\Index.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\Time\Today.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\User\Edit.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\User\Index.cshtml.g.cs
+C:\Visual Studio 2022\repos\Time Tracker\obj\Debug\net5.0\Razor\Views\User\Task.cshtml.g.cs

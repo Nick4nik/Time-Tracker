@@ -39,18 +39,20 @@ namespace Time_Tracker.Controllers
             if (!result.Succeeded)
             {
                 model.Message = true;
-                Lists(model);
+                await Lists(model);
                 return View(model);
             }
 
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            if (User.Identity.IsAuthenticated)
+            {
+                await signInManager.SignOutAsync();
+            }
             return RedirectToAction("Index", "Home");
         }
 

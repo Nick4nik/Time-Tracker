@@ -22,16 +22,13 @@
 	width: 200px;
 }
 
-input:invalid {
-	border: 1px red solid;
-}
-
 input:valid {
 	border: 1px green solid;
 }
 
 option[value=""][disabled] {
 	display: none;
+	border: 1px red solid;
 }
 
 input {

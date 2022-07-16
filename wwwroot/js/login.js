@@ -4,6 +4,7 @@ var passConf = document.getElementById("regPassConf");
 var selComp = document.getElementById("Company");
 var selPost = document.getElementById("Post");
 var email = document.getElementById("regEmail");
+var check = true;
 //#endregion
 //#region functions
 function showPassMatch() {
@@ -68,7 +69,7 @@ function checkEmail() {
 //#region events
 pass.onkeyup = function () { checkPass(); };
 passConf.onkeyup = function () { checkPass(); };
-selComp.onclick = function () { checkSelect() };
-selPost.onclick = function () { checkSelect() };
+selComp.onblur = function () { checkSelect() };
+selPost.onblur = function () { checkSelect() };
 email.onkeyup = function () { checkEmail() };
 //#endregion
