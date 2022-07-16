@@ -17,17 +17,12 @@ namespace Time_Tracker.Controllers
         {
             _logger = logger;
         }
+
         [HttpGet]
         public IActionResult Index()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Login");
-            }
             return View();
         }
-
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

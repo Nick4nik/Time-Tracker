@@ -72,8 +72,7 @@ namespace Time_Tracker.Controllers
             if (!result.Succeeded)
             {
                 model.Message = true;
-                model.RegisterCompany = await db.Companies.ToListAsync();
-                model.RegisterPost = await db.Posts.ToListAsync();
+                await Lists(model);
                 return View("Login", model);
             }
 
@@ -85,6 +84,7 @@ namespace Time_Tracker.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [NonAction]
         public async Task<LoginRegisterViewModel> Lists(LoginRegisterViewModel model)
         {
             model.RegisterCompany = await db.Companies.ToListAsync();

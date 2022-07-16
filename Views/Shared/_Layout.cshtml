@@ -6,7 +6,9 @@
     @RenderSection("title", false)
     @RenderSection("scripts", false)
     @RenderSection("styles", false)
+    <script src="~/js/site.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
+
 </head>
 <body>
     <div class="navbar">
@@ -25,7 +27,14 @@
         }
 	</div>
     <div class="main">
-        @RenderBody()
+        @if (IsSectionDefined("Body"))
+        {
+            @RenderSection("body", false)
+        }
+        else
+        {
+            <label id="noContent">Sorry. It`s no content yet.</label>
+        }
     </div>
 </body>
 </html>

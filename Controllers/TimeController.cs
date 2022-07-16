@@ -6,6 +6,10 @@ namespace Time_Tracker.Controllers
     {
         public IActionResult Index()
         {
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Login", "Login");
+            //}
             return View();
         }
     }
