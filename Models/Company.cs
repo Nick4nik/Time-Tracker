@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Time_Tracker.Models
 {
@@ -7,7 +6,8 @@ namespace Time_Tracker.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<User>? Users { get; set; } = new List<User>();
-        public List<Post>? Posts { get; set; } = new List<Post>();
+        public List<Tasks> Tasks { get; set; } = new List<Tasks>();
+        public List<User> Users { get; set; } = new List<User>();
+        public List<Post> Posts { get; set; } = new List<Post>();
     }
 }

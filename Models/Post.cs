@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace Time_Tracker.Models
 {
@@ -11,7 +8,7 @@ namespace Time_Tracker.Models
         public string Name { get; set; }
         public double Salary { get; set; }
         public double Schedule { get; set; }
-        public List<Company>? Company { get; set; } = new List<Company>();
-        public List<User>? User { get; set; } = new List<User>();
+        public List<Company> Companies { get; set; } = new List<Company>();
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

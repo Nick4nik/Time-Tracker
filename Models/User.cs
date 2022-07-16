@@ -6,7 +6,15 @@ namespace Time_Tracker.Models
 {
     public class User : IdentityUser
     {
-        public List<Company>? Company { get; set; } = new List<Company>();
-        public List<Post>? Post { get; set; } = new List<Post>();
+        public int CompanyId { get; set; }
+        public int PostId { get; set; }
+        public List<Time> Time { get; set; } = new List<Time>();
+        public List<Tasks> Tasks { get; set; } = new List<Tasks>();
+
+        [ForeignKey(nameof(CompanyId))]
+        public Company Company { get; set; }
+
+        [ForeignKey(nameof(PostId))]
+        public Post Post { get; set; }
     }
 }

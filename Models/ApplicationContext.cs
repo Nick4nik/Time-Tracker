@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Time_Tracker.Models
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
+        public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<Time> Times { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Post> Posts { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureCreated();
+            Database.EnsureCreatedAsync();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

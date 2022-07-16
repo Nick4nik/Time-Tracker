@@ -59,29 +59,38 @@ namespace Time_Tracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(LoginRegisterViewModel model)
         {
-            User user = new User
+            try
             {
-                Email = model.RegisterEmail,
-                UserName = model.RegisterEmail,
-                
-            };
-            var company = await db.Companies.FindAsync(model.CompanyId);
-            var post = await db.Posts.FindAsync(model.PostId);
-            var result = await userManager.CreateAsync(user, model.RegisterPassword);
+                User user = new User
+                {
+                    Email = model.RegisterEmail,
+                    UserName = model.RegisterEmail,
+                };
+                var company = await db.Companies.FindAsync(model.CompanyId);
+                var post = await db.Posts.FindAsync(model.PostId);
+                var result = await userManager.CreateAsync(user, model.RegisterPassword);
 
-            if (!result.Succeeded)
+                if (!result.Succeeded)
+                {
+                    model.Message = true;
+                    await Lists(model);
+                    return View("Login", model);
+                }
+
+                company.Users.Add(user);
+                post.Users.Add(user);
+
+                await db.SaveChangesAsync();
+                await signInManager.SignInAsync(user, false);
+                return RedirectToAction("Index", "Home");
+            }
+            catch
             {
                 model.Message = true;
                 await Lists(model);
                 return View("Login", model);
             }
-
-            user.Company.Add(company);
-            user.Post.Add(post);
-
-            await db.SaveChangesAsync();
-            await signInManager.SignInAsync(user, false);
-            return RedirectToAction("Index", "Home");
+            
         }
 
         [NonAction]

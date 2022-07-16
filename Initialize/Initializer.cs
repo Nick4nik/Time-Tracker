@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
 
@@ -70,8 +70,8 @@ namespace Time_Tracker.Initialize
                 db.Posts.Add(post1);
                 db.Posts.Add(post2);
                 db.SaveChanges();
-                post1.Company?.Add(company);
-                post2.Company?.Add(company);
+                post1.Companies.Add(company);
+                post2.Companies.Add(company);
                 await db.SaveChangesAsync();
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
