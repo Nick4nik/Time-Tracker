@@ -22,10 +22,17 @@ namespace Time_Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(bool message = false)
         {
             LoginRegisterViewModel model = new LoginRegisterViewModel();
-            model.Message = false;
+            if (message)
+            {
+                model.Message = true;
+            }
+            else
+            {
+                model.Message = false;
+            }
             await Lists(model);
             return View(model);
         }

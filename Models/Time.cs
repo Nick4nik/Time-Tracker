@@ -10,7 +10,9 @@ namespace Time_Tracker.Models
         public DateTime Date { get; set; }
         public TimeSpan Duration { get; set; }
         public TimeSpan PauseDuration { get; set; }
+        public bool IsWorking { get; set; }
+        public bool IsPaused { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

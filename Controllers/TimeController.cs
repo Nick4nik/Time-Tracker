@@ -8,7 +8,8 @@ namespace Time_Tracker.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Login");
+                bool message = true;
+                return RedirectToAction("Login", "Login", message);
             }
             return View();
         }

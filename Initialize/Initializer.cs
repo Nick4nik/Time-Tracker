@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
 
@@ -16,7 +15,7 @@ namespace Time_Tracker.Initialize
             string adminPassword = "Q1w2e3";
             string userRole = "employee";
             string userEmail = "user@gmail.com";
-            string userPassword = "Q1w2e3";
+            string userPassword = "Qwe123";
             string companyName = "Google";
             string postName1 = "Engineer";
             double postSalary1 = 800;

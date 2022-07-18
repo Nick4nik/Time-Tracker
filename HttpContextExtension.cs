@@ -6,14 +6,14 @@ namespace Time_Tracker
 {
     public static class HttpContextExtensions
     {
-        public static Guid GetUserId(this HttpContext httpContext)
+        public static string GetUserId(this HttpContext httpContext)
         {
             if (httpContext == null)
             {
-                
+                return Convert.ToString(Guid.Empty);
             }
-            return Guid.Empty;
-            return Guid.Parse(httpContext.User.Claims.Single(x => x.Type.Contains("nameidentifier")).Value);
+            
+            return httpContext.User.Claims.Single(x => x.Type.Contains("nameidentifier")).Value;
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Time_Tracker.Models
         public DbSet<Post> Posts { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureCreatedAsync();
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
