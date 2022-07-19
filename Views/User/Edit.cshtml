@@ -1,9 +1,41 @@
-﻿@section title {
-    <title>Edit user</title>
+﻿@model UserEditViewModel
+
+@section title {
+<title>Edit user</title>
 }
 @section scripts {
-    <script src="~/js/user/edit.js" async></script>
+<script src="~/js/user/edit.js" defer></script>
 }
 @section styles {
-    <link rel="stylesheet" href="~/css/user/edit.css" />
+<link rel="stylesheet" href="~/css/user/edit.css" />
+}
+
+@section body {
+<div id="message" class="container">
+    @if (Model.Message)
+    {
+    <label>Ooops... Something went wrong.Please retype.</label>
+    }
+</div>
+< id="edit" class="container">
+    <form method="post" asp-controller="User" asp-action="Edit">
+        <div id="emailCheck">
+            <label>Email is incorrect</label>
+        </div>
+        <div>
+            <input type="hidden" value="@Model.Id" asp-for="@Model.Id" />
+        </div>
+        <div>
+            <label for="Email">Email</label><br />
+            <input id="Email" asp-for="@Model.Email" type="text" minlength="5" />
+        </div>
+        <div>
+            <label for="Name">Name</label><br />
+            <input id="Name" asp-for="@Model.Name" type="text" />
+        </div>
+        <div>
+            <button>Confirm</button>
+        </div>
+    </form>
+</div>
 }

@@ -1,12 +1,49 @@
-﻿@model User
+﻿@model UserInfoViewModel
 
 @section title {
-    <title>User info</title>
+<title>User info</title>
 }
 @section scripts {
-    <script src="~/js/user/index.js" async></script>
+<script src="~/js/user/index.js" defer></script>
 }
 @section styles {
-    <link rel="stylesheet" href="~/css/user/index.css" />
+<link rel="stylesheet" href="~/css/user/index.css" />
 }
 
+@section body {
+<div class="shorts">
+    <input id="start" type="hidden" value="@Model.Start.ToString()">
+    <input id="expEnd" type="hidden" value="@Model.ExpEnd.ToString()">
+    <input id="schedule" type="hidden" value="@Model.ScheduleSeconds">
+    <div class="time">
+        <label for="time">Left</label>
+        <p id="time"></p>
+        @*@if (Model.IsTime)
+            {
+
+
+            }
+            else
+            {
+            <label>You are not working now</label>
+
+            }*@
+    </div>
+    <div class="tasks">
+        <label for="tasks">Tasks</label>
+        @if (Model.IsTasks)
+        {
+
+        <label id="tasks">@Model.ActiveTasks</label>
+        }
+        else
+        {
+        <label id="tasks">You have not tasks yet</label>
+        }
+    </div>
+</div>
+<div class="hrefs">
+	<a class="href" asp-controller="User" asp-action="Edit">Edit</a>
+    <a class="href" asp-controller="User" asp-action="Tasks">Tasks</a>
+</div>
+}

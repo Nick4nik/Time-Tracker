@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Time_Tracker.Models;
 
-namespace Time_Tracker.ViewModels
+namespace Time_Tracker.ViewModels.Login
 {
     public class LoginRegisterViewModel
     {

@@ -4,7 +4,7 @@
 <title>Login</title>
 }
 @section scripts {
-<script src="~/js/login/index.js" async></script>
+<script src="~/js/login/index.js" defer></script>
 }
 @section styles {
 <link rel="stylesheet" href="~/css/login/index.css" />
@@ -35,11 +35,11 @@
                         <input id="logPass" name="LoginPassword" type="password" required minlength="6" maxlength="6" />
                     </div>
                     <div>
-                        <input type="checkbox" id="logRemember" name="LoginRememberMe" title="Remeber me" />
+                        <input type="checkbox" id="logRemember" asp-for="LoginRememberMe"/>
                         <label for="logRemember">Remember me</label>
                     </div>
                     <div>
-                        <button id="submitLog">Sign in</button>
+                        <button>Sign in</button>
                     </div>
                 </form>
             </div>
@@ -96,7 +96,7 @@
                             maxlength="6" />
                     </div>
                     <div>
-                        <button id="submitReg">Sign up</button>
+                        <button>Sign up</button>
                     </div>
                 </form>
             </div>

@@ -38,4 +38,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Companies\" />
+    <Folder Include="ViewModels\Posts\" />
+    <Folder Include="ViewModels\Tasks\" />
+  </ItemGroup>
+
 </Project>

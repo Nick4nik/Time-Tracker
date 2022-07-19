@@ -3,19 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
-using Time_Tracker.ViewModels;
+using Time_Tracker.Other;
+using Time_Tracker.ViewModels.User;
 
 namespace Time_Tracker.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserManager<User> userManager;
-        private readonly ApplicationContext db;
 
-        public UserController(UserManager<User> userManager, ApplicationContext db)
+        public UserController(UserManager<User> userManager)
         {
             this.userManager = userManager;
-            this.db = db;
         }
 
         [HttpGet]
@@ -26,27 +25,30 @@ namespace Time_Tracker.Controllers
                 bool message = true;
                 return RedirectToAction("Login", "Login", message);
             }
+
+            var user = await GetUserAsync();
+
             UserInfoViewModel model = new UserInfoViewModel
             {
-                user = await GetUserAsync()
+                user = user,
+                IsTasks = false,
+                IsTime = false
             };
 
-            if (model.user.Tasks.Any())
+            if (user.Tasks.Any())
             {
-                model.Tasks = true;
+                model.IsTasks = true;
+                model.ActiveTasks = user.Tasks.Where(x => !x.IsCompleted).Count();
             }
-            else
+            if (user.Time.Any())
             {
-                model.Tasks = false;
+                model.IsTime = true;
+                model.ScheduleHours = user.Post.ScheduleHours;
+                model.ScheduleSeconds = user.Post.ScheduleSeconds;
+                model.Start = user.Time.Last().Start;
+                model.ExpEnd = user.Time.Last().ExpEnd;
             }
-            if (model.user.Time.Any())
-            {
-                model.Time = true;
-            }
-            else
-            {
-                model.Time = false;
-            }
+
             return View(model);
         }
 
@@ -58,31 +60,31 @@ namespace Time_Tracker.Controllers
                 bool message = true;
                 return RedirectToAction("Login", "Login", message);
             }
-
+            var user = await GetUserAsync();
             UserEditViewModel model = new UserEditViewModel
             {
-                user = await GetUserAsync(),
-                Message = true
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.UserName,
+                Message = false
             };
-
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(UserEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            User user = new User
             {
-                model.Message = false;
-                return View(model);
-            }
-
-            User user = model.user;
+                Id = model.Id,
+                Email = model.Email,
+                UserName = model.Name,
+            };
             var result = await userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
             {
-                model.Message = false;
+                model.Message = true;
                 return View(model);
             }
 
@@ -103,7 +105,7 @@ namespace Time_Tracker.Controllers
         [NonAction]
         public async Task<User> GetUserAsync()
         {
-            var myId = HttpContext.GetUserId();
+            var myId = HttpContext.GetUserIdString();
             return await userManager.FindByIdAsync(myId);
         }
     }

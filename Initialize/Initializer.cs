@@ -19,10 +19,12 @@ namespace Time_Tracker.Initialize
             string companyName = "Google";
             string postName1 = "Engineer";
             double postSalary1 = 800;
-            double postSchedule1 = 8;
+            string postScheduleHours1 = "8";
+            string postScheduleSeconds1 = "28800";
             string postName2 = "Manager";
             double postSalary2 = 1200;
-            double postSchedule2 = 12;
+            string postScheduleHours2 = "12";
+            string postScheduleSeconds2 = "43200";
             User user = new User
             {
                 Email = userEmail,
@@ -41,13 +43,15 @@ namespace Time_Tracker.Initialize
             {
                 Name = postName1,
                 Salary = postSalary1,
-                Schedule = postSchedule1
+                ScheduleHours = postScheduleHours1,
+                ScheduleSeconds = postScheduleSeconds1
             };
             Post post2 = new Post
             {
                 Name = postName2,
                 Salary = postSalary2,
-                Schedule = postSchedule2,
+                ScheduleHours = postScheduleHours2,
+                ScheduleSeconds = postScheduleSeconds2
             };
             #endregion
 

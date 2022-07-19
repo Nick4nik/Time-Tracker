@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
-using Time_Tracker.ViewModels;
+using Time_Tracker.ViewModels.Login;
 
 namespace Time_Tracker.Controllers
 {
@@ -33,7 +32,7 @@ namespace Time_Tracker.Controllers
             {
                 model.Message = false;
             }
-            await Lists(model);
+            await GetLists(model);
             return View(model);
         }
 
@@ -46,7 +45,7 @@ namespace Time_Tracker.Controllers
             if (!result.Succeeded)
             {
                 model.Message = true;
-                await Lists(model);
+                await GetLists(model);
                 return View(model);
             }
 
@@ -80,7 +79,7 @@ namespace Time_Tracker.Controllers
                 if (!result.Succeeded)
                 {
                     model.Message = true;
-                    await Lists(model);
+                    await GetLists(model);
                     return View("Login", model);
                 }
 
@@ -94,14 +93,14 @@ namespace Time_Tracker.Controllers
             catch
             {
                 model.Message = true;
-                await Lists(model);
+                await GetLists(model);
                 return View("Login", model);
             }
             
         }
 
         [NonAction]
-        public async Task<LoginRegisterViewModel> Lists(LoginRegisterViewModel model)
+        public async Task<LoginRegisterViewModel> GetLists(LoginRegisterViewModel model)
         {
             model.RegisterCompany = await db.Companies.ToListAsync();
             model.RegisterPost = await db.Posts.ToListAsync();
