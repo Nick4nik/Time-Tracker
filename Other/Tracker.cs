@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
-using Time_Tracker.ViewModels.Times;
 
 namespace Time_Tracker.Other
 {
@@ -16,126 +15,132 @@ namespace Time_Tracker.Other
             this.db = db;
         }
 
-        public async Task<TrackerModel> StartAsync(User user)
+        public async Task<string> StartAsync(User user)
         {
             #region Initialize
-            var dayString = Convert.ToString(DateTime.Now.Date)[..^8];
-            var now = DateTime.Now.TimeOfDay;
-            var nowString = Convert.ToString(now)[..^8];
-            var expEnd = now.Add(TimeSpan.Parse(user.Post.ScheduleHours));
-            var expEndString = Convert.ToString(expEnd)[..^8];
-            TrackerModel model = new TrackerModel
-            {
-                user = user,
-                IsStarted = true,
-            };
-            
+            var day = Convert.ToString(DateTime.Now.Date)[..^8];
+            var nowDateTime = DateTime.Now.TimeOfDay;
+            var now = Convert.ToString(nowDateTime)[..^8];
+            var expEndString = Convert.ToString(nowDateTime
+                .Add(TimeSpan.Parse(user.Post.ScheduleHours)))[..^8];
             #endregion
 
             var timeAny = await db.Times.AnyAsync();
             if (!timeAny)
             {
-                Time time = new Time
-                {
-                    User = user,
-                    Start = nowString,
-                    StartPause = now,
-                    ExpEnd = expEndString,
-                    IsStarted = true,
-                    Date = dayString,
-                    Session = 1
-                };
-
-                await db.Times.AddAsync(time);
-                await db.SaveChangesAsync();
-                return model;
+                await CreateNewAsync(user);
+                return null;
             }
 
-            var timeToday = user.Time.Find(x => x.Date == dayString);
+            var timeToday = await db.Times.Where(x => x.User == user).LastAsync(x => x.Date == day);
+            // i`m not sure, which would be correct and faster. gues it`s the first request.
+            //var timeToday = user.Time.Find(x => x.Date == dayString);
             if (timeToday == null)
             {
-                Time time = new Time
-                {
-                    User = user,
-                    Start = nowString,
-                    StartPause = now,
-                    ExpEnd = expEndString,
-                    IsStarted = true,
-                    Date = dayString,
-                    Session = 1
-                };
-
-                await db.Times.AddAsync(time);
-                await db.SaveChangesAsync();
-                return model;
+                await CreateNewAsync(user);
+                return null;
             }
-
-            if (timeToday.IsStarted)
+            else if (timeToday.IsStarted)
             {
-                model.IsStarted = true;
-                model.Error = "You have already started your job";
-                return model;
+                string Error = "You have already started your job";
+                return Error;
             }
             else if (timeToday.IsPaused)
             {
-                //model.IsStarted = true;
-                //model.IsPaused = false;
-                //modelToday.IsStarted = true;
-                //modelToday.IsPaused = false;
-                //modelToday.PauseDuration = Convert.ToString(now - time.StartPause)[..^8];
+                timeToday.IsStarted = true;
+                timeToday.IsPaused = false;
+                timeToday.PauseDuration = Convert.ToString(nowDateTime - 
+                    TimeSpan.Parse(timeToday.StartPause))[..^8];
+                timeToday.StartPause = null;
+                return null;
             }
             else //timeToday.IsFinished
             {
-                //
+                await CreateNewAsync(user, timeToday.Session);
+                return null;
             }
-
-            return model;
         }
 
-        public async Task<TrackerModel> PauseAsync(User user)
+        public async Task<string> PauseAsync(User user)
         {
-            var dayString = Convert.ToString(DateTime.Now.Date)[..^8];
-            var now = DateTime.Now.TimeOfDay;
-            var nowString = Convert.ToString(now)[..^8];
-            TrackerModel model = new TrackerModel
-            {
-                user = user,
-            };
+            var day = Convert.ToString(DateTime.Now.Date)[..^8];
 
             var timeAny = await db.Times.AnyAsync();
             if (!timeAny)
             {
-                model.Error = "You haven't started your job yet";
-                return model;
+                string Error = "You haven't started your job yet";
+                return Error;
             }
 
-            var timeToday = user.Time.Find(x => x.Date == dayString);
+            var timeToday = await db.Times.Where(x => x.User == user).LastAsync(x => x.Date == day);
             if (timeToday == null)
             {
-                model.Error = "You haven't started your job yet";
-                return model;
+                string Error = "You haven't started your job yet";
+                return Error;
             }
             else if (timeToday.IsStarted)
             {
-
+                var now = DateTime.Now.TimeOfDay;
+                var start = TimeSpan.Parse(timeToday.Start);
+                timeToday.IsStarted = false;
+                timeToday.IsPaused = true;
+                timeToday.StartPause = Convert.ToString(now)[..^8];
+                timeToday.Duration = Convert.ToString(now - start)[..^8];
+                await db.SaveChangesAsync();
+                return null;
             }
             else if (timeToday.IsPaused)
             {
-                model.Error = "You've already gone on break";
-                return model;
+                string Error = "You've already gone on break";
+                return Error;
             }
             else
             {
-                model.Error = "You haven't started your job yet";
-                return model;
+                string Error = "You haven't started your job yet";
+                return Error;
             }
-            return model;
         }
 
-        public async Task<TrackerModel> FinishAsync(User user)
+        public async Task<string> FinishAsync(User user)
         {
-            TrackerModel model = new TrackerModel();
-            return model;
+            var day = Convert.ToString(DateTime.Now.Date)[..^8];
+            var now = DateTime.Now.TimeOfDay;
+
+            var timeAny = await db.Times.AnyAsync();
+            if (!timeAny)
+            {
+                string Error = "You haven't started your job yet";
+                return null;
+            }
+        }
+
+        public async Task CreateNewAsync(User user, int session = 0)
+        {
+            #region Initialize
+            var nowDateTime = DateTime.Now.TimeOfDay;
+            var day = Convert.ToString(DateTime.Now.Date)[..^8];
+            var now = Convert.ToString(nowDateTime)[..^8];
+            var expEndString = Convert.ToString(nowDateTime
+                .Add(TimeSpan.Parse(user.Post.ScheduleHours)))[..^8];
+            #endregion
+
+            Time time = new Time
+            {
+                User = user,
+                Start = now,
+                ExpEnd = expEndString,
+                IsStarted = true,
+                Date = day,
+                Session = 1
+            };
+            if (session != 0)
+            {
+                time.Session = session + 1;
+            }
+
+            await db.Times.AddAsync(time);
+            await db.SaveChangesAsync();
+            return;
         }
     }
 }

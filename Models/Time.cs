@@ -12,7 +12,8 @@ namespace Time_Tracker.Models
         public string? PauseDuration { get; set; }
         public int Session { get; set; }
         public string Date { get; set; }
-        public TimeSpan? StartPause { get; set; }
+        public string? StartPause { get; set; }
+        public bool IsFullDay { get; set; }
         public bool IsStarted { get; set; }
         public bool IsPaused { get; set; }
         public bool IsFinished { get; set; }

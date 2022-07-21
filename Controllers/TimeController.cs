@@ -39,6 +39,7 @@ namespace Time_Tracker.Controllers
             {
                 TimeTodayViewModel modelError = new TimeTodayViewModel();
                 modelError.Message = "No entries yet";
+                return View(modelError);
             }
 
             return View(model);
@@ -54,7 +55,7 @@ namespace Time_Tracker.Controllers
             TimeHistoryViewModel model = await GetHistoryAsync();
             if (model == null)
             {
-                return RedirectToAction("Index", "Time", "No entries yet");
+                return RedirectToAction("Index", "No entries yet");
             }
 
             return View(model);
@@ -66,18 +67,17 @@ namespace Time_Tracker.Controllers
             var user = await GetUserAsync();
             try
             {
-                var result = await tracker.StartAsync(user);
-                if (result.Error != null)
+                var Error = await tracker.StartAsync(user);
+                if (Error != null)
                 {
-                    return RedirectToAction("Index", "Time", result.Error);
+                    return RedirectToAction("Index", Error);
                 }
+                return RedirectToAction("Index");
             }
             catch
             {
                 return RedirectToAction("Index", "Oops. Something went wrong. Please repeat");
             }
-
-            return RedirectToAction("Index", "Time", //"IsStart");
         }
 
         [HttpPost]
@@ -86,18 +86,17 @@ namespace Time_Tracker.Controllers
             var user = await GetUserAsync();
             try
             {
-                var result = await tracker.PauseAsync(user);
-                if (result.Error != null)
+                var Error = await tracker.PauseAsync(user);
+                if (Error != null)
                 {
-                    return RedirectToAction("Index", "Time", result.Error);
+                    return RedirectToAction("Index", Error);
                 }
+                return RedirectToAction("Index");
             }
             catch
             {
                 return RedirectToAction("Index", "Oops. Something went wrong. Please repeat");
             }
-            
-            return RedirectToAction("Index", "Time", //"IsPaused");
         }
 
         [HttpPost]
@@ -106,17 +105,17 @@ namespace Time_Tracker.Controllers
             var user = await GetUserAsync();
             try
             {
-                var result = await tracker.FinishAsync(user);
-                if (result.Error != null)
+                var Error = await tracker.FinishAsync(user);
+                if (Error != null)
                 {
-                    return RedirectToAction("Index", "Time", result.Error);
+                    return RedirectToAction("Index", Error);
                 }
+                return RedirectToAction("Index");
             }
             catch
             {
                 return RedirectToAction("Index", "Oops. Something went wrong. Please repeat");
             }
-            return RedirectToAction("Index", "Time", //"IsEnd");
         }
 
         [NonAction]
@@ -127,7 +126,6 @@ namespace Time_Tracker.Controllers
             var q = await db.Times.Where(x=> x.User == user).ToListAsync();
             if (q == null)
             {
-                model.IsExist = false;
                 return null;
             }
             model.Time = q;
@@ -140,13 +138,12 @@ namespace Time_Tracker.Controllers
             TimeTodayViewModel model = new TimeTodayViewModel();
             User user = await GetUserAsync();
             var now = Convert.ToString(DateTime.Today)[..^8];
-            var q = await db.Times.Where(x => x.User == user).Where(x => x.Date == now).ToListAsync();
-            if (q == null)
+            var time = await db.Times.Where(x => x.User == user).Where(x => x.Date == now).ToListAsync();
+            if (time == null)
             {
-                model.IsExist = false;
                 return null;
             }
-            model.Time = q;
+            model.Time = time;
             return model;
         }
 
