@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
-using Time_Tracker.ViewModels.Login;
+using Time_Tracker.ViewModels.Logins;
 
 namespace Time_Tracker.Controllers
 {
@@ -21,17 +21,16 @@ namespace Time_Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login(bool message = false)
+        public async Task<IActionResult> Login(bool error = false)
         {
             LoginRegisterViewModel model = new LoginRegisterViewModel();
-            if (message)
+            if (error)
             {
-                model.Message = true;
+                model.Error = true;
+                await GetLists(model);
+                return View(model);
             }
-            else
-            {
-                model.Message = false;
-            }
+            model.Error = false;
             await GetLists(model);
             return View(model);
         }
@@ -44,7 +43,7 @@ namespace Time_Tracker.Controllers
                 model.LoginEmail, model.LoginPassword, model.LoginRememberMe, false);
             if (!result.Succeeded)
             {
-                model.Message = true;
+                model.Error = true;
                 await GetLists(model);
                 return View(model);
             }
@@ -78,7 +77,7 @@ namespace Time_Tracker.Controllers
 
                 if (!result.Succeeded)
                 {
-                    model.Message = true;
+                    model.Error = true;
                     await GetLists(model);
                     return View("Login", model);
                 }
@@ -92,7 +91,7 @@ namespace Time_Tracker.Controllers
             }
             catch
             {
-                model.Message = true;
+                model.Error = true;
                 await GetLists(model);
                 return View("Login", model);
             }

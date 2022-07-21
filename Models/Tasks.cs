@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
         public int CompanyId { get; set; }
-        public Company? Company { get; set; }
-        public User? User { get; set; }
+        public Company Company { get; set; }
+        public User User { get; set; }
     }
 }

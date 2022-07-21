@@ -1,4 +1,4 @@
-﻿namespace Time_Tracker.ViewModels.User
+﻿namespace Time_Tracker.ViewModels.Users
 {
     public class UserTasksViewModel
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Time_Tracker.Models;
 using Time_Tracker.Other;
-using Time_Tracker.ViewModels.User;
+using Time_Tracker.ViewModels.Users;
 
 namespace Time_Tracker.Controllers
 {
@@ -22,8 +22,7 @@ namespace Time_Tracker.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                bool message = true;
-                return RedirectToAction("Login", "Login", message);
+                return RedirectToAction("Login", "Login", true);
             }
 
             var user = await GetUserAsync();
@@ -57,8 +56,7 @@ namespace Time_Tracker.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                bool message = true;
-                return RedirectToAction("Login", "Login", message);
+                return RedirectToAction("Login", "Login", true);
             }
             var user = await GetUserAsync();
             UserEditViewModel model = new UserEditViewModel
@@ -66,7 +64,7 @@ namespace Time_Tracker.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 Name = user.UserName,
-                Message = false
+                Error = false
             };
             return View(model);
         }
@@ -84,7 +82,7 @@ namespace Time_Tracker.Controllers
 
             if (!result.Succeeded)
             {
-                model.Message = true;
+                model.Error = true;
                 return View(model);
             }
 
@@ -96,8 +94,7 @@ namespace Time_Tracker.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                bool message = true;
-                return RedirectToAction("Login", "Login", message);
+                return RedirectToAction("Login", "Login", true);
             }
             return View();
         }

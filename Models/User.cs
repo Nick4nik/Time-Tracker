@@ -7,7 +7,7 @@ namespace Time_Tracker.Models
     {
         public List<Time> Time { get; set; } = new List<Time>();
         public List<Tasks> Tasks { get; set; } = new List<Tasks>();
-        public Company? Company { get; set; }
-        public Post? Post { get; set; }
+        public Company Company { get; set; }
+        public Post Post { get; set; }
     }
 }

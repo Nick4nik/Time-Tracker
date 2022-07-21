@@ -19,11 +19,11 @@ namespace Time_Tracker.Initialize
             string companyName = "Google";
             string postName1 = "Engineer";
             double postSalary1 = 800;
-            string postScheduleHours1 = "8";
+            string postScheduleHours1 = "08:00";
             string postScheduleSeconds1 = "28800";
             string postName2 = "Manager";
             double postSalary2 = 1200;
-            string postScheduleHours2 = "12";
+            string postScheduleHours2 = "12:00";
             string postScheduleSeconds2 = "43200";
             User user = new User
             {
