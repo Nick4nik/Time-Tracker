@@ -32,33 +32,39 @@ namespace Time_Tracker.Other
                 return null;
             }
 
-            var timeToday = await db.Times.Where(x => x.User == user).LastAsync(x => x.Date == day);
+            var timeTodayLast = await db.Times.Where(x => x.User == user)
+                .LastAsync(x => x.Date == day);
             // i`m not sure, which would be correct and faster. gues it`s the first request.
             //var timeToday = user.Time.Find(x => x.Date == dayString);
-            if (timeToday == null)
+            if (timeTodayLast == null)
             {
                 await CreateNewAsync(user);
                 return null;
             }
-            else if (timeToday.IsStarted)
+            else if (timeTodayLast.IsStarted)
             {
                 string Error = "You have already started your job";
                 return Error;
             }
-            else if (timeToday.IsPaused)
+            else if (timeTodayLast.IsPaused)
             {
-                timeToday.IsStarted = true;
-                timeToday.IsPaused = false;
-                timeToday.PauseDuration = Convert.ToString(nowDateTime - 
-                    TimeSpan.Parse(timeToday.StartPause))[..^8];
-                timeToday.StartPause = null;
+                timeTodayLast.IsStarted = true;
+                timeTodayLast.IsPaused = false;
+                timeTodayLast.PauseDuration = Convert.ToString(nowDateTime - 
+                    TimeSpan.Parse(timeTodayLast.StartPause))[..^8];
+                timeTodayLast.EndPause = now;
+                timeTodayLast.StartPause = null;
+
+                db.Times.Update(timeTodayLast);
+                await db.SaveChangesAsync();
                 return null;
             }
-            else //timeToday.IsFinished
+            else if (timeTodayLast.IsFinished) // IsFinished
             {
-                await CreateNewAsync(user, timeToday.Session);
+                await CreateNewAsync(user, timeTodayLast.Session);
                 return null;
             }
+            return null;
         }
 
         public async Task<string> PauseAsync(User user)
@@ -72,7 +78,8 @@ namespace Time_Tracker.Other
                 return Error;
             }
 
-            var timeToday = await db.Times.Where(x => x.User == user).LastAsync(x => x.Date == day);
+            var timeToday = await db.Times.Where(x => x.User == user)
+                .LastAsync(x => x.Date == day);
             if (timeToday == null)
             {
                 string Error = "You haven't started your job yet";
@@ -86,6 +93,8 @@ namespace Time_Tracker.Other
                 timeToday.IsPaused = true;
                 timeToday.StartPause = Convert.ToString(now)[..^8];
                 timeToday.Duration = Convert.ToString(now - start)[..^8];
+
+                db.Times.Update(timeToday);
                 await db.SaveChangesAsync();
                 return null;
             }
@@ -94,24 +103,48 @@ namespace Time_Tracker.Other
                 string Error = "You've already gone on break";
                 return Error;
             }
-            else
+            else if (timeToday.IsFinished) // IsFinished
             {
                 string Error = "You haven't started your job yet";
                 return Error;
             }
+            return null;
         }
 
         public async Task<string> FinishAsync(User user)
         {
             var day = Convert.ToString(DateTime.Now.Date)[..^8];
-            var now = DateTime.Now.TimeOfDay;
+            
 
             var timeAny = await db.Times.AnyAsync();
             if (!timeAny)
             {
                 string Error = "You haven't started your job yet";
+                return Error;
+            }
+            var timeTodayLast = await db.Times.Where(x => x.User == user)
+                .LastAsync(x => x.Date == day);
+            if (timeTodayLast.IsStarted)
+            {
+                if (timeTodayLast.PauseDuration == null)
+                {
+                    await SaveAsync(timeTodayLast, 0);
+                    return null;
+                }
+                await SaveAsync(timeTodayLast, 0);
                 return null;
             }
+            else if (timeTodayLast.IsPaused)    // it`s part in process
+            {
+                await SaveAsync(timeTodayLast, 1);
+                return null;
+            }
+            else if (timeTodayLast.IsFinished) // IsFinished
+            {
+                string Error = "You haven't started your job yet";
+                return Error;
+            }
+            return null;
         }
 
         public async Task CreateNewAsync(User user, int session = 0)
@@ -128,7 +161,7 @@ namespace Time_Tracker.Other
             {
                 User = user,
                 Start = now,
-                ExpEnd = expEndString,
+                ExpDuration = expEndString,
                 IsStarted = true,
                 Date = day,
                 Session = 1
@@ -141,6 +174,46 @@ namespace Time_Tracker.Other
             await db.Times.AddAsync(time);
             await db.SaveChangesAsync();
             return;
+        }
+
+        public async Task SaveAsync (Time model, int pause)
+        {
+            var now = DateTime.Now.TimeOfDay;
+
+            if (model.PauseDuration == null)
+            {
+                model.Duration = Convert.ToString(now -
+                TimeSpan.Parse(model.Start))[..^8];
+            }
+            else
+            {
+                //model.Duration = (now - model.EndPause) + model.Duration;
+                model.Duration = Convert.ToString((now.Subtract(TimeSpan.Parse(model.EndPause)))
+                    .Add(TimeSpan.Parse(model.Duration)))[..^8];
+            }
+
+            var isFullDay = model.Duration.CompareTo(
+                TimeSpan.Parse(model.ExpDuration));
+            if (isFullDay >= 0)
+            {
+                model.IsFullDay = true;
+            }
+            else
+            {
+                model.IsFullDay = false;
+            }
+            
+
+            model.End = Convert.ToString(now)[..^8];
+            model.IsStarted = false;
+            model.IsPaused = false;
+            model.IsFinished = true;
+            model.ExpDuration = null;
+            model.StartPause = null;
+            model.EndPause = null;
+
+            db.Times.Update(model);
+            await db.SaveChangesAsync();
         }
     }
 }

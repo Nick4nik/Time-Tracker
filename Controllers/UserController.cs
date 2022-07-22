@@ -45,7 +45,7 @@ namespace Time_Tracker.Controllers
                 model.ScheduleHours = user.Post.ScheduleHours;
                 model.ScheduleSeconds = user.Post.ScheduleSeconds;
                 model.Start = user.Time.Last().Start;
-                model.ExpEnd = user.Time.Last().ExpEnd;
+                model.ExpEnd = user.Time.Last().ExpDuration;
             }
 
             return View(model);
