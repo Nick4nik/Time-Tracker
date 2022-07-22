@@ -131,12 +131,12 @@ namespace Time_Tracker.Other
                     await SaveAsync(timeTodayLast, 0);
                     return null;
                 }
-                await SaveAsync(timeTodayLast, 0);
+                await SaveAsync(timeTodayLast, 1);
                 return null;
             }
             else if (timeTodayLast.IsPaused)    // it`s part in process
             {
-                await SaveAsync(timeTodayLast, 1);
+                await SaveAsync(timeTodayLast, 2);
                 return null;
             }
             else if (timeTodayLast.IsFinished) // IsFinished
@@ -180,16 +180,24 @@ namespace Time_Tracker.Other
         {
             var now = DateTime.Now.TimeOfDay;
 
-            if (model.PauseDuration == null)
+            if (pause == 0)
             {
                 model.Duration = Convert.ToString(now -
                 TimeSpan.Parse(model.Start))[..^8];
+                
+            }
+            else if (pause == 1)
+            {
+                //model.Duration = (now - model.EndPause) + model.Duration;
+                model.Duration = Convert.ToString(
+                    (now.Subtract(TimeSpan.Parse(model.EndPause)))
+                    .Add(TimeSpan.Parse(model.Duration)))[..^8];
             }
             else
             {
-                //model.Duration = (now - model.EndPause) + model.Duration;
-                model.Duration = Convert.ToString((now.Subtract(TimeSpan.Parse(model.EndPause)))
-                    .Add(TimeSpan.Parse(model.Duration)))[..^8];
+                model.PauseDuration = Convert.ToString(
+                    now.Subtract(TimeSpan.Parse(model.StartPause)))[..^8];
+                model.Duration = model.Duration;
             }
 
             var isFullDay = model.Duration.CompareTo(
@@ -202,7 +210,6 @@ namespace Time_Tracker.Other
             {
                 model.IsFullDay = false;
             }
-            
 
             model.End = Convert.ToString(now)[..^8];
             model.IsStarted = false;
